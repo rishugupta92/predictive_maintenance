@@ -1,8 +1,9 @@
 # for data manipulation
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import make_column_transformer
-from sklearn.pipeline import make_pipeline
+from sklearn.compose import make_column_transformer, ColumnTransformer
+from sklearn.pipeline import Pipeline, make_pipeline
+from sklearn.impute import SimpleImputer
 # for model training, tuning, and evaluation
 import xgboost as xgb
 from sklearn.model_selection import GridSearchCV
@@ -16,6 +17,7 @@ from huggingface_hub import login, HfApi, create_repo
 from huggingface_hub.utils import RepositoryNotFoundError, HfHubHTTPError
 import mlflow
 
+# mlflow.set_tracking_uri("http://localhost:5000")
 mlflow.set_tracking_uri("file:./mlruns")
 mlflow.set_experiment("mlops-training-experiment")
 
@@ -126,7 +128,7 @@ with mlflow.start_run():
     print(f"Model saved as artifact at: {model_path}")
 
     # Upload to Hugging Face
-    repo_id = "rishugupta92/predictive-maintenance"
+    repo_id = "rishugupta92/predictive-maintenance-model"
     repo_type = "model"
 
     # Step 1: Check if the space exists
